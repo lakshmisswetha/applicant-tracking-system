@@ -1,12 +1,20 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import JobSheet from "@/components/modules/Job-Sheet";
 
 const JobDetails = () => {
     return (
         <div>
-            <Tabs defaultValue="account" className=" flex flex-col mt-4">
-                <TabsList className="flex justify-around p-6">
+            <div className="header flex justify-between items-center px-[250px] py-2 bg-muted fixed w-full z-10 shadow-sm">
+                <div className="font-bold text-xl">Content Writer</div>
+
+                <Input className="w-[450px] bg-muted-foreground/10" />
+                <JobSheet />
+            </div>
+            <Tabs defaultValue="application-review" className=" flex flex-col mt-4 flex-1  px-[250px]">
+                <TabsList className="flex justify-around p-6 mt-20">
                     <TabsTrigger value="application-review" className="px-6 py-2">
                         Application Review
                     </TabsTrigger>

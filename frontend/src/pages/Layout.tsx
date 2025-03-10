@@ -1,22 +1,23 @@
-import { Button } from "@/components/ui/button";
-import ToggleThemeBtn from "@/components/ui/ToggleThemeBtn";
-import { Input } from "@/components/ui/input";
 import { FaUserCircle } from "react-icons/fa";
 import { Outlet } from "react-router-dom";
 
+import { useState } from "react";
+
 const Layout = () => {
+    const [sheetConfig, setSheetConfig] = useState({
+        isOpen: false,
+        title: "Post a Job",
+    });
     return (
-        <div className="flex flex-col">
-            <div className="header  flex justify-between items-center p-3 bg-muted">
-                Logo
-                <Input className="w-[450px] bg-muted-foreground/10" />
-                <Button className="p-4">+ Post a Job</Button>
-                <div className="flex text-lg">
-                    <ToggleThemeBtn />
-                    <FaUserCircle className="ml-3 text-xl" />
+        <div className="flex flex-col min-h-screen">
+            <div className="flex justify-between p-2 w-full fixed top-0 bg-white z-20">
+                <div className="text-zinc-500 font-extrabold italic text-3xl">hireX</div>
+
+                <div className="flex text-lg justify-center items-center">
+                    <FaUserCircle className="text-2xl" />
                 </div>
             </div>
-            <div className="body px-[180px] h-screen">
+            <div className="body flex-1 pt-[50px]">
                 <Outlet />
             </div>
         </div>
