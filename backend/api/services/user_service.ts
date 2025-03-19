@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { userValidationSchema } from "../validations/userValidation";
 import { createUser, findUserByEmail } from "../repository/userRepository";
+import { ZodError } from "zod";
 
 export const signup = async (userData: any) => {
     try {
@@ -13,7 +14,13 @@ export const signup = async (userData: any) => {
 
         return await createUser(username, email, hashedPassword);
     } catch (err) {
-        console.error("Error in signup service: ", err);
-        throw new Error();
+        if (err instanceof ZodError) {
+            console.error(
+                "Error in signup service: ",
+                err.errors.map((e) => e.message)
+            );
+            throw err;
+        }
+        console.error("Unexpected error in Signup service.");
     }
 };

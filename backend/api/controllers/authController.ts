@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { signup } from "../services/signup";
+import { signup } from "../services/user_service";
 import { ZodError } from "zod";
 
 export const handleSignup = async (req: Request, res: Response) => {
@@ -8,10 +8,10 @@ export const handleSignup = async (req: Request, res: Response) => {
         res.status(201).json({ status: true, user: newUser, message: "User Created Successfully." });
     } catch (err) {
         if (err instanceof ZodError) {
-            const errorMessages = err.errors.map((e) => e.message);
-            res.status(400).json({ status: false, error: errorMessages });
+            res.status(400).json({ status: false, error: "Validation error" });
+        } else {
+            console.error("Error in handleSignup", err);
+            res.status(500).json({ status: false, error: "Internal Server Error" });
         }
-        console.error("Error in handleSignup", err);
-        res.status(500).json({ status: false, error: "Internal Server Error" });
     }
 };
