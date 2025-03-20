@@ -25,6 +25,7 @@
         "@types/bcrypt": "^5.0.2",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
+        "@types/jsonwebtoken": "^9.0.9",
         "@types/node": "^22.13.10",
         "@types/pg": "^8.11.11",
         "node-pg-migrate": "^7.9.1",
