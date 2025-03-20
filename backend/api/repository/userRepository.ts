@@ -1,4 +1,5 @@
 import db from "../config/db";
+import { IUser } from "../models/userModel";
 
 export const findUserByEmail = async (email: string): Promise<boolean> => {
     try {
@@ -8,6 +9,18 @@ export const findUserByEmail = async (email: string): Promise<boolean> => {
     } catch (err) {
         console.error("Error finding user by email: ", err);
         throw new Error("Database error: Unable to check user existence");
+    }
+};
+
+export const getUserDetailsByEmail = async (email: string): Promise<IUser | null> => {
+    try {
+        const query = `SELECT user_id, username, email, password FROM users WHERE email = $1`;
+        const result = await db.query(query, [email]);
+        if (result.rows.length === 0) return null;
+        return result.rows[0];
+    } catch (err) {
+        console.error("Error fetching user by email: ", err);
+        throw new Error("Database error: Unable to fetch user details");
     }
 };
 
