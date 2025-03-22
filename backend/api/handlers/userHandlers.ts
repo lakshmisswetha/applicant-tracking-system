@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { login, signup } from "../services/userService";
 import { ZodError } from "zod";
-import { error } from "console";
 import { refreshAccessToken } from "../utils/helper";
 
 export const handleSignup = async (req: Request, res: Response) => {
@@ -23,7 +22,7 @@ export const handleLogin = async (req: Request, res: Response) => {
         const loginResponse = await login(req.body);
         res.status(200).json({
             status: true,
-            userId: loginResponse.userId,
+            user_id: loginResponse.userId,
             accessToken: loginResponse.accessToken,
             refreshToken: loginResponse.refreshToken,
         });

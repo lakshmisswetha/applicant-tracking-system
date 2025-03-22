@@ -1,24 +1,26 @@
 import { Request, Response, NextFunction } from "express";
-import jwt from "jsonwebtoken";
 import { validateAccessToken } from "../utils/helper";
 
 export interface AuthenticatedRequest extends Request {
     userId?: number;
 }
 
-export const authenticateUser = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+export const authenticateUser = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
-        return res.status(403).json({ error: "Authorization header is required" });
+        res.status(403).json({ error: "Authorization header is required" });
+        return;
     }
     const accessToken = authHeader.split(" ")[1];
     if (!accessToken) {
-        return res.status(401).json({ error: "Access token is missing" });
+        res.status(401).json({ error: "Access token is missing" });
+        return;
     }
     try {
         const decoded = validateAccessToken(accessToken);
         if (!decoded) {
-            return res.status(401).json({ error: "Invalid access token" });
+            res.status(401).json({ error: "Invalid access token" });
+            return;
         }
         req.userId = decoded.userId;
         next();
