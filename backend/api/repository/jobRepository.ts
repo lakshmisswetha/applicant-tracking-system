@@ -1,6 +1,8 @@
+import { object } from "zod";
 import db from "../config/db";
+import { IJob } from "../models/jobModel";
 
-export const createJob = async (jobDetails: any): Promise<number> => {
+export const createJob = async (jobDetails: IJob): Promise<number> => {
     try {
         const query = `
             INSERT INTO jobs (
@@ -31,5 +33,42 @@ export const createJob = async (jobDetails: any): Promise<number> => {
     } catch (err) {
         console.error("Error creating job: ", err);
         throw new Error("Database error: Unable to create job");
+    }
+};
+
+export const getJobById = async (jobId: number): Promise<IJob | null> => {
+    try {
+        const query = `
+            SELECT * FROM jobs WHERE job_id = $1
+        `;
+        const result = await db.query(query, [jobId]);
+        if (result.rows.length === 0) {
+            console.warn(`Job not found with id: ${jobId}`);
+            return null;
+        }
+        return result.rows[0];
+    } catch (err) {
+        console.error("Error fetching job: ", err);
+        throw new Error("Database error: Unable to fetch job");
+    }
+};
+
+export const updateJob = async (jobId: number, updatedDetails: Partial<IJob>): Promise<number | null> => {
+    try {
+        const fields = Object.entries(updatedDetails)
+            .map(([key], index) => `${key} = $${index + 1}`)
+            .join(",");
+
+        const query = `
+        UPDATE jobs SET ${fields}, updated_at = NOW() 
+        WHERE job_id = $${Object.keys(updatedDetails).length + 1} 
+        RETURNING job_id
+        `;
+
+        const result = await db.query(query, [...Object.values(updatedDetails), jobId]);
+        return result.rows[0].job_id;
+    } catch (err) {
+        console.error("Error updating job: ", err);
+        throw new Error("Database error: Unable to update job");
     }
 };
