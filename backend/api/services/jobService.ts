@@ -1,4 +1,4 @@
-import { IJob } from "../models/jobModel";
+import { IJob } from "../repository/schemas/jobsModel";
 import * as jobRepository from "../repository/jobRepository";
 
 export const createJob = async (jobDetails: IJob) => {
@@ -12,6 +12,19 @@ export const createJob = async (jobDetails: IJob) => {
     } catch (err) {
         console.error("Unexpected error in job service: ", err);
         throw new Error("Job creation failed");
+    }
+};
+
+export const getJobById = async (jobId: number) => {
+    try {
+        const job = await jobRepository.getJobById(jobId);
+        if (!job) {
+            console.error("Job fetching failed");
+        }
+        return job;
+    } catch (err) {
+        console.error("Unexpected error in job service: ", err);
+        throw new Error("Job fetching failed");
     }
 };
 
