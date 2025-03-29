@@ -1,4 +1,4 @@
-import { IJob } from "../repository/schemas/jobsModel";
+import { IJob } from "../types/jobTypes";
 import * as jobRepository from "../repository/jobRepository";
 
 export const createJob = async (jobDetails: IJob) => {

@@ -1,12 +1,12 @@
 import bcrypt from "bcrypt";
-import { loginValidationSchema, userValidationSchema } from "../validations/userValidation";
+import { loginValidationSchema, signupValidationSchema } from "../validations/userValidation";
 import { createUser, findUserByEmail, getUserDetailsByEmail } from "../repository/userRepository";
 import { ZodError } from "zod";
 import { generateTokens } from "../utils/helper";
 
 export const signup = async (userData: any) => {
     try {
-        const { username, email, password } = userValidationSchema.parse(userData);
+        const { username, email, password } = signupValidationSchema.parse(userData);
 
         const userExists = await findUserByEmail(email);
         if (userExists) throw new Error("email already exists");
@@ -38,9 +38,9 @@ export const login = async (loginData: any) => {
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) throw new Error("Invalid Credentials");
 
-        const { accessToken, refreshToken } = generateTokens(user.user_id);
+        const { accessToken, refreshToken } = generateTokens(user.userId);
 
-        return { userId: user.user_id, accessToken, refreshToken };
+        return { userId: user.userId, accessToken, refreshToken };
     } catch (err) {
         if (err instanceof ZodError) {
             console.error(
