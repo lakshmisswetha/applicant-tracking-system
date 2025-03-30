@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import db from "../config/db";
 import { IUser } from "../types";
-import { users } from "./schemas/usersSchema";
+import { users } from "./schemas/userSchema";
 
 export const findUserByEmail = async (email: string): Promise<boolean> => {
     try {

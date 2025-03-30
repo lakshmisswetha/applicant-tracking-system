@@ -6,7 +6,7 @@ export interface IJob {
     location?: string | null;
     openings?: number | null;
     experience?: string | null;
-    employee_type?: string | null;
+    employeeType?: string | null;
     workType?: string | null;
     qualificationRequired?: string | null;
     salary?: string | null;

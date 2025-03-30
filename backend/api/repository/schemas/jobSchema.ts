@@ -1,5 +1,5 @@
 import { pgTable, serial, text, timestamp, integer } from "drizzle-orm/pg-core";
-import { users } from "./usersSchema";
+import { users } from "./userSchema";
 
 export const jobs = pgTable("jobs", {
     jobId: serial("job_id").primaryKey(),
@@ -20,7 +20,7 @@ export const jobs = pgTable("jobs", {
     applicationCount: integer("application_count"),
     interviewCount: integer("interview_count"),
     documentVerificationCount: integer("document_verification_count"),
-    backgroundCheckCount: integer("background_check"),
+    backgroundCheckCount: integer("background_check_count"),
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

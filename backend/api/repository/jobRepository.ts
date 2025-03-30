@@ -1,5 +1,5 @@
 import db from "../config/db";
-import { jobs } from "./schemas/jobsSchema";
+import { jobs } from "./schemas/jobSchema";
 import { eq } from "drizzle-orm";
 import { IJob } from "../types";
 
@@ -14,7 +14,7 @@ export const createJob = async (jobDetails: IJob): Promise<number> => {
                 location: jobDetails.location,
                 openings: jobDetails.openings,
                 experience: jobDetails.experience,
-                employeeType: jobDetails.employee_type,
+                employeeType: jobDetails.employeeType,
                 workType: jobDetails.workType,
                 qualificationRequired: jobDetails.qualificationRequired,
                 salary: jobDetails.salary,
