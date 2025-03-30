@@ -1,1 +1,0 @@
-ALTER TABLE "jobs" RENAME COLUMN "background_check" TO "background_check_count";
