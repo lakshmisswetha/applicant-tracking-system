@@ -23,6 +23,7 @@ export const handleLogin = async (req: Request, res: Response) => {
         res.status(200).json({
             status: true,
             user_id: loginResponse.userId,
+            role: loginResponse.role,
             accessToken: loginResponse.accessToken,
             refreshToken: loginResponse.refreshToken,
         });
@@ -48,7 +49,11 @@ export const handleRefreshAccessToken = async (req: Request, res: Response) => {
             res.status(403).json({ error: "Invalid or expired refresh token" });
             return;
         }
-        res.status(200).json({ status: true, message: "Successfully renewed access token", accessToken: newAccessToken });
+        res.status(200).json({
+            status: true,
+            message: "Successfully renewed access token",
+            accessToken: newAccessToken,
+        });
     } catch (err) {
         console.error(err);
         res.status(500).json({ status: false, error: "Internal Server Error" });

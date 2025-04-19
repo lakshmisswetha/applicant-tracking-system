@@ -6,14 +6,13 @@ import { generateTokens } from "../utils/helper";
 
 export const signup = async (userData: any) => {
     try {
-        const { username, email, password } = signupValidationSchema.parse(userData);
-
+        const { username, email, password, role } = signupValidationSchema.parse(userData);
         const userExists = await findUserByEmail(email);
         if (userExists) throw new Error("email already exists");
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        return await createUser(username, email, hashedPassword);
+        return await createUser(username, email, hashedPassword, role);
     } catch (err) {
         if (err instanceof ZodError) {
             console.error(
@@ -40,7 +39,7 @@ export const login = async (loginData: any) => {
 
         const { accessToken, refreshToken } = generateTokens(user.userId);
 
-        return { userId: user.userId, accessToken, refreshToken };
+        return { userId: user.userId, role: user.role, accessToken, refreshToken };
     } catch (err) {
         if (err instanceof ZodError) {
             console.error(

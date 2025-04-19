@@ -1,6 +1,5 @@
 import db from "./config/db";
 import app from "./app";
-import pool from "./config/db";
 
 const PORT = process.env.PORT || 5000;
 

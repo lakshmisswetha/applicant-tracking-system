@@ -16,7 +16,13 @@ export const findUserByEmail = async (email: string): Promise<boolean> => {
 export const getUserDetailsByEmail = async (email: string): Promise<IUser | null> => {
     try {
         const user = await db
-            .select({ userId: users.userId, username: users.username, email: users.email, password: users.password })
+            .select({
+                userId: users.userId,
+                username: users.username,
+                email: users.email,
+                password: users.password,
+                role: users.role,
+            })
             .from(users)
             .where(eq(users.email, email));
         return user.length > 0 ? user[0] : null;
@@ -26,9 +32,12 @@ export const getUserDetailsByEmail = async (email: string): Promise<IUser | null
     }
 };
 
-export const createUser = async (username: string, email: string, password: string): Promise<number> => {
+export const createUser = async (username: string, email: string, password: string, role: string): Promise<number> => {
     try {
-        const user = await db.insert(users).values({ username, email, password }).returning({ userId: users.userId });
+        const user = await db
+            .insert(users)
+            .values({ username, email, password, role })
+            .returning({ userId: users.userId });
         return user[0].userId;
     } catch (err) {
         console.error("Error creating user: ", err);
