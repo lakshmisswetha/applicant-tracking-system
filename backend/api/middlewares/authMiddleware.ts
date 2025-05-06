@@ -3,6 +3,7 @@ import { validateAccessToken } from "../utils/helper";
 
 export interface AuthenticatedRequest extends Request {
     userId?: number;
+    role?: "admin" | "candidate";
 }
 
 export const authenticateUser = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {
@@ -18,11 +19,13 @@ export const authenticateUser = (req: AuthenticatedRequest, res: Response, next:
     }
     try {
         const decoded = validateAccessToken(accessToken);
+        console.log("decoded valuse is: ", decoded);
         if (!decoded) {
             res.status(401).json({ error: "Invalid access token" });
             return;
         }
         req.userId = decoded.userId;
+        req.role = decoded.role;
         next();
     } catch {
         res.status(401).json({ error: "Access token verification failed" });

@@ -5,6 +5,7 @@ dotenv.config();
 
 interface JWTPayload {
     userId: number;
+    role: "admin" | "candidate";
 }
 
 const ACCESS_TOKEN_SECRET = process.env.ACCESS_TOKEN_SECRET;
@@ -14,9 +15,9 @@ if (!ACCESS_TOKEN_SECRET || !REFRESH_TOKEN_SECRET) {
     throw new Error("JWT Secrets are missing.");
 }
 
-export const generateTokens = (userId: number) => {
-    const accessToken = jwt.sign({ userId }, ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
-    const refreshToken = jwt.sign({ userId }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+export const generateTokens = (userId: number, role: string) => {
+    const accessToken = jwt.sign({ userId, role }, ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
+    const refreshToken = jwt.sign({ userId, role }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 
     return { accessToken, refreshToken };
 };
