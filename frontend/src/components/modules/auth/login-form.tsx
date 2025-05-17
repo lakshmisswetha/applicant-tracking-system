@@ -1,8 +1,9 @@
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Link } from "react-router-dom";
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
     return (
@@ -14,8 +15,6 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                 <CardContent>
                     <form>
                         <div className="grid gap-6">
-                            <div className="flex flex-col gap-4"></div>
-
                             <div className="grid gap-6">
                                 <div className="grid gap-2">
                                     <Label htmlFor="email">Email</Label>
@@ -36,17 +35,14 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                             </div>
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
-                                <a href="#" className="underline underline-offset-4">
+                                <Link to="/signup" className="underline-offset-4 hover:underline">
                                     Sign up
-                                </a>
+                                </Link>
                             </div>
                         </div>
                     </form>
                 </CardContent>
             </Card>
-            <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary  ">
-                By clicking continue, you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
-            </div>
         </div>
     );
 }
