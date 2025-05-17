@@ -18,6 +18,7 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
 
     const {
         mutate: signUp,
+        isPending,
         isError,
         error,
         isSuccess,
@@ -89,8 +90,12 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
                                         required
                                     />
                                 </div>
-                                <Button type="submit" className="w-full">
-                                    Sign Up
+                                <Button
+                                    type="submit"
+                                    className="w-full flex items-center justify-center "
+                                    disabled={isPending}
+                                >
+                                    {isPending ? "Signing Up" : "Sign Up"}
                                 </Button>
                             </div>
                             {isError && <p className="text-red-500 text-sm">{(error as Error).message}</p>}
