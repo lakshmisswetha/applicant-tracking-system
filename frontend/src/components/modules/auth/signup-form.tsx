@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signupUser } from "./auth.api";
@@ -15,15 +15,18 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const {
         mutate: signUp,
         isPending,
         isError,
         error,
-        isSuccess,
     } = useMutation({
         mutationFn: signupUser,
+        onSuccess: () => {
+            navigate("/login");
+        },
     });
 
     const handleSignup = async (e: React.FormEvent) => {
@@ -99,7 +102,7 @@ export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutR
                                 </Button>
                             </div>
                             {isError && <p className="text-red-500 text-sm">{(error as Error).message}</p>}
-                            {isSuccess && <p className="text-green-500 text-sm">Signup successful!</p>}
+
                             <div className="text-center text-sm">
                                 Already have an account?{" "}
                                 <Link to="/login" className="underline-offset-4 hover:underline">

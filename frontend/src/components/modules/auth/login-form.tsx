@@ -8,19 +8,23 @@ import { useState } from "react";
 import { loginSchema } from "@/utils/zod-schema";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "./auth.api";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const navigate = useNavigate();
 
     const {
         mutate: login,
         isPending,
         isError,
         error,
-        isSuccess,
     } = useMutation({
         mutationFn: loginUser,
+        onSuccess: () => {
+            navigate("/jobs");
+        },
     });
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -79,7 +83,7 @@ export function LoginForm({ className, ...props }: React.ComponentPropsWithoutRe
                                 </Button>
                             </div>
                             {isError && <p className="text-red-500 text-sm">{(error as Error).message}</p>}
-                            {isSuccess && <p className="text-green-500 text-sm">Login successful!</p>}
+
                             <div className="text-center text-sm">
                                 Don&apos;t have an account?{" "}
                                 <Link to="/signup" className="underline-offset-4 hover:underline">

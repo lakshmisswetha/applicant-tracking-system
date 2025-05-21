@@ -1,5 +1,5 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { JobsList } from "@/components/ui/JobsList";
+import { JobsList } from "@/components/modules/Jobs-List/JobsList";
 import { Input } from "@/components/ui/input";
 import JobSheet from "@/components/modules/Job-Sheet";
 
@@ -25,9 +25,9 @@ const Jobs = () => {
                 <JobSheet />
             </div>
 
-            <ul className="flex-1 overflow-auto px-[250px] mt-20">
+            <div className="flex-1 overflow-auto px-[250px]  mt-20">
                 <JobsList />
-            </ul>
+            </div>
         </div>
     );
 };
