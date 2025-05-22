@@ -24,6 +24,7 @@ export const createJob = async (jobDetails: IJob): Promise<number> => {
                 interviewCount: 0,
                 documentVerificationCount: 0,
                 backgroundCheckCount: 0,
+                companyName: jobDetails.companyName,
             })
             .returning({ jobId: jobs.jobId });
 
@@ -31,6 +32,16 @@ export const createJob = async (jobDetails: IJob): Promise<number> => {
     } catch (err) {
         console.error("Error creating job: ", err);
         throw new Error("Database error: Unable to create job.");
+    }
+};
+
+export const getAllJobs = async (): Promise<IJob[] | null> => {
+    try {
+        const allJobs = await db.select().from(jobs);
+        return allJobs.length > 0 ? allJobs : null;
+    } catch (err) {
+        console.error("Error fetching all jobs: ", err);
+        throw new Error("Database error: Unable to fetch all jobs");
     }
 };
 

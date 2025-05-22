@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { IoShareSocial } from "react-icons/io5";
-// import EditJob from "../modules/Drop-down";
 
 export function JobsList() {
     return (

@@ -21,6 +21,7 @@ export const jobs = pgTable("jobs", {
     interviewCount: integer("interview_count"),
     documentVerificationCount: integer("document_verification_count"),
     backgroundCheckCount: integer("background_check_count"),
+    companyName: text("company_name"),
     createdAt: timestamp("created_at").defaultNow(),
     updatedAt: timestamp("updated_at")
         .defaultNow()

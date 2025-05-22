@@ -15,6 +15,19 @@ export const createJob = async (jobDetails: IJob) => {
     }
 };
 
+export const getAllJobs = async () => {
+    try {
+        const jobs = await jobRepository.getAllJobs();
+        if (!jobs) {
+            console.error("Failed to fetch all jobs");
+        }
+        return jobs;
+    } catch (err) {
+        console.error("Unexpected error in job service: ", err);
+        throw new Error("Failed to fetch all jobs");
+    }
+};
+
 export const getJobById = async (jobId: number) => {
     try {
         const job = await jobRepository.getJobById(jobId);

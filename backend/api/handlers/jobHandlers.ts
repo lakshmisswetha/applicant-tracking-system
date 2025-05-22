@@ -18,6 +18,20 @@ export const handleCreateJob = async (req: AuthenticatedRequest, res: Response) 
     }
 };
 
+export const handleGetAllJobs = async (req: Request, res: Response) => {
+    try {
+        const jobs = await jobService.getAllJobs();
+        if (!jobs) {
+            res.status(404).json({ status: false, error: "Jobs not found" });
+        } else {
+            res.status(200).json({ status: true, message: "Succesfully fetched all jobs", data: jobs });
+        }
+    } catch (err) {
+        console.error("Error fetching jobs: ", err);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
+
 export const handleGetJob = async (req: Request, res: Response) => {
     try {
         const jobId = parseInt(req.params.jobId);

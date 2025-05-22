@@ -16,6 +16,7 @@ export interface IJob {
     interviewCount?: number | null;
     documentVerificationCount?: number | null;
     backgroundCheckCount?: number | null;
+    companyName?: string | null;
     createdAt?: Date | null;
     updatedAt?: Date | null;
 }
