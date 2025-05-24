@@ -16,7 +16,7 @@ if (!ACCESS_TOKEN_SECRET || !REFRESH_TOKEN_SECRET) {
 }
 
 export const generateTokens = (userId: number, role: string) => {
-    const accessToken = jwt.sign({ userId, role }, ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
+    const accessToken = jwt.sign({ userId, role }, ACCESS_TOKEN_SECRET, { expiresIn: "1d" });
     const refreshToken = jwt.sign({ userId, role }, REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
 
     return { accessToken, refreshToken };
