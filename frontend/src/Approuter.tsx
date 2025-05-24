@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Jobs from "./pages/Jobs";
 import JobDetails from "./pages/JobDetails";
+import { Navigate } from "react-router-dom";
 
 const appRouter = createBrowserRouter([
     {
@@ -13,6 +14,10 @@ const appRouter = createBrowserRouter([
     {
         path: "/login",
         element: <Login />,
+    },
+    {
+        path: "/",
+        element: <Navigate to="/login" replace />,
     },
     {
         path: "/",

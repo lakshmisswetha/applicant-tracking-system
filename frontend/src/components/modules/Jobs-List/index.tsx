@@ -1,3 +1,3 @@
-import { JobsList } from "./JobsList";
+import { JobList } from "./JobList";
 
-export default JobsList;
+export default JobList;

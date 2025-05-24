@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { loginSchema } from "@/utils/zod-schema";
+import { loginSchema } from "@/schemas/zod-schema";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "./auth.api";
 import { useNavigate } from "react-router-dom";

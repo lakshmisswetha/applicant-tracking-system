@@ -1,4 +1,4 @@
-import { LoginSchema, SignupSchema } from "@/utils/zod-schema";
+import { LoginSchema, SignupSchema } from "@/schemas/zod-schema";
 import { API_BASE_URL } from "@/lib/utils";
 
 export const signupUser = async (payload: SignupSchema) => {
@@ -22,8 +22,12 @@ export const loginUser = async (payload: LoginSchema) => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
     });
+    const data = await response.json();
     if (!response.ok) {
         const errorData = await response.json();
         throw new Error(errorData.message || "Login failed");
     }
+
+    localStorage.setItem("token", data.accessToken);
+    return data;
 };
