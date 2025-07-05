@@ -34,8 +34,8 @@ export const JobList = () => {
                         <div>{formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}</div>
                     </div>
                     <div className="flex justify-between">
-                        <Button variant="outline">View Details</Button>
-                        <Button className="hover:bg-zinc-400">Apply Now</Button>
+                        <Button variant="link">View Details</Button>
+                        <Button className="hover:bg-black hover:text-white">Apply Now</Button>
                     </div>
                 </div>
             ))}

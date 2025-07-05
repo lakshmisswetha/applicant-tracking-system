@@ -3,33 +3,75 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { TabsContent } from "@/components/ui/tabs";
+import { Job } from "@/types/job";
 
-const JobOverview: React.FC = () => {
+interface JobOverviewProps {
+    jobData: Job;
+    setJobData: React.Dispatch<React.SetStateAction<Job>>;
+}
+
+const JobOverview: React.FC<JobOverviewProps> = ({ jobData, setJobData }) => {
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setJobData((prev) => ({ ...prev, [name]: value }));
+    };
+
     return (
         <TabsContent value="job-overview">
             <div className="flex">
                 <div className="left flex-1 ">
                     <div className="mt-5">
-                        <Label htmlFor="job-title" className="mt-3">
+                        <Label htmlFor="jobTitle" className="mt-3">
                             Job Title
                         </Label>
-                        <Input type="job-title" className="mt-2" />
+                        <Input name="jobTitle" value={jobData.jobTitle} onChange={handleChange} className="mt-2" />
+                    </div>
+                    <div className="mt-5">
+                        <Label htmlFor="companyName">Hiring Company</Label>
+                        <Input
+                            name="companyName"
+                            value={jobData.companyName || ""}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
                         <Label htmlFor="location">Location</Label>
-                        <Input type="location" className="mt-2" />
+                        <Input
+                            name="location"
+                            value={jobData.location || ""}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
-                        <Label htmlFor="experience">Experience</Label>
-                        <Input type="experience" className="mt-2" />
+                        <Label htmlFor="experience">Experience in Years</Label>
+                        <Input
+                            name="experience"
+                            value={jobData.experience || ""}
+                            onChange={handleChange}
+                            placeholder="e.g., 1, 2, 3 "
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
-                        <Label htmlFor="work-approach">Work Approach</Label>
-                        <Input type="work-approach" className="mt-2" />
+                        <Label htmlFor="workType">Work Type</Label>
+                        <Input
+                            name="workType"
+                            value={jobData.workType || ""}
+                            onChange={handleChange}
+                            placeholder="e.g., Hybrid, Remote, Onsite"
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
-                        <Label htmlFor="language">Language</Label>
-                        <Input type="language" className="mt-2" />
+                        <Label htmlFor="skillsRequired">Skills Required</Label>
+                        <Input
+                            name="skillsRequired"
+                            value={jobData.skillsRequired || ""}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                 </div>
                 <div className="right flex-1 ml-4">
@@ -37,29 +79,57 @@ const JobOverview: React.FC = () => {
                         <Label htmlFor="department" className="mt-3">
                             Department
                         </Label>
-                        <Input type="department" className="mt-2" />
+                        <Input
+                            name="department"
+                            value={jobData.department || ""}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
                         <Label htmlFor="openings">No. of openings</Label>
-                        <Input type="openings" className="mt-2" />
+                        <Input
+                            name="openings"
+                            type="number"
+                            value={jobData.openings}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
-                        <Label htmlFor="employee-type">Employee Type</Label>
-                        <Input type="employee-type" className="mt-2" />
+                        <Label htmlFor="employeeType">Employee Type</Label>
+                        <Input
+                            name="employeeType"
+                            value={jobData.employeeType || ""}
+                            onChange={handleChange}
+                            placeholder="e.g., Full-time, Part-time, Contract"
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
-                        <Label htmlFor="education">Education</Label>
-                        <Input type="education" className="mt-2" />
+                        <Label htmlFor="qualificationRequired">Qualification required</Label>
+                        <Input
+                            name="qualificationRequired"
+                            value={jobData.qualificationRequired || ""}
+                            onChange={handleChange}
+                            className="mt-2"
+                        />
                     </div>
                     <div className="mt-5">
                         <Label htmlFor="salary">Salary</Label>
-                        <Input type="salary" className="mt-2" />
+                        <Input name="salary" value={jobData.salary || ""} onChange={handleChange} className="mt-2" />
                     </div>
                 </div>
             </div>
             <div className="mt-5">
-                <Label htmlFor="message">Job Description</Label>
-                <Textarea placeholder="Enter the Job Description here." className="mt-2 min-h-[150px]" id="message"></Textarea>
+                <Label htmlFor="jobDescription">Job Description</Label>
+                <Textarea
+                    placeholder="Enter the Job Description here."
+                    value={jobData.jobDescription || ""}
+                    onChange={handleChange}
+                    className="mt-2 min-h-[150px]"
+                    name="jobDescription"
+                ></Textarea>
             </div>
         </TabsContent>
     );
