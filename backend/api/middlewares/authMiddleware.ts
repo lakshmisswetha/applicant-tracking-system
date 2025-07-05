@@ -19,7 +19,7 @@ export const authenticateUser = (req: AuthenticatedRequest, res: Response, next:
     }
     try {
         const decoded = validateAccessToken(accessToken);
-        console.log("decoded valuse is: ", decoded);
+
         if (!decoded) {
             res.status(401).json({ error: "Invalid access token" });
             return;
