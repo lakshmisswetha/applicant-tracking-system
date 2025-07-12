@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 app.use(
     cors({
-        origin: "https://applicant-tracking-system.pages.dev/",
+        origin: "https://applicant-tracking-system.pages.dev",
         credentials: true,
     })
 );
