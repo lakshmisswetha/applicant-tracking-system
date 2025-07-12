@@ -39,7 +39,7 @@ export const handleGetJob = async (req: Request, res: Response) => {
         if (!job) {
             res.status(404).json({ status: false, error: "Job not found" });
         } else {
-            res.status(200).json({ status: true, job, message: "Successfully fetched job" });
+            res.status(200).json({ status: true, data: job, message: "Successfully fetched job" });
         }
     } catch (err) {
         console.error("Error fetching job details: ", err);

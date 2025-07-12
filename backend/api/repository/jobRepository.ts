@@ -57,10 +57,12 @@ export const getJobById = async (jobId: number): Promise<IJob | null> => {
 
 export const updateJob = async (jobId: number, updatedDetails: Partial<IJob>): Promise<number | null> => {
     try {
+        const { updatedAt, ...otherDetails } = updatedDetails;
+
         const [updatedJob] = await db
             .update(jobs)
             .set({
-                ...updatedDetails,
+                ...otherDetails,
                 updatedAt: new Date(),
             })
             .where(eq(jobs.jobId, jobId))
