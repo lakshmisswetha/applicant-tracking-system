@@ -19,13 +19,47 @@ import JobOverview from "./Components/JobOverview";
 import Pipeline from "./Components/Pipeline";
 import { Job } from "@/types/job";
 import { createJob } from "./createJob.api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUserRole } from "@/hooks/useUserRole";
+import { jobSchema } from "@/schemas/job.schema";
+import { editJob } from "../Job-Details/jobDetails.api";
 
 interface JobSheetContentProps {
     setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+    jobToEdit?: Job;
 }
-const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen }) => {
+interface JobSheetProps {
+    jobToEdit?: Job;
+}
+const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen, jobToEdit }) => {
     const [isPublishMode, setIsPublishMode] = useState(false);
     const [activeTab, setActiveTab] = useState("job-overview");
+
+    const queryClient = useQueryClient();
+
+    const createJobMutation = useMutation({
+        mutationFn: createJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["jobs"] });
+            console.log("Job Published");
+            setIsOpen(false);
+        },
+        onError: (error) => {
+            console.error("Error Publishing Job: ", error);
+        },
+    });
+    const updateJobMutation = useMutation({
+        mutationFn: editJob,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["job", jobToEdit?.jobId] });
+
+            console.log("Job Updated", jobToEdit?.jobId);
+            setIsOpen(false);
+        },
+        onError: (error) => {
+            console.error("Error Updating Job: ", error);
+        },
+    });
 
     const handleTabChange = (newTab: string) => {
         setActiveTab(newTab);
@@ -36,30 +70,36 @@ const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen }) => {
         if (activeTab === "job-overview") {
             handleTabChange("pipeline");
         } else if (activeTab === "pipeline") {
-            try {
-                await createJob(jobData);
-                console.log("Job Published");
-                setIsOpen(false);
-            } catch (err) {
-                console.log("Error publishing job: ", err);
+            const parsed = jobSchema.safeParse(jobData);
+            if (!parsed.success) {
+                const errorMessages = parsed.error.issues.map((e) => e.message).join("\n");
+                alert(errorMessages);
+                return;
+            }
+            if (jobToEdit) {
+                updateJobMutation.mutate(jobData);
+            } else {
+                createJobMutation.mutate(jobData);
             }
         }
     };
 
-    const [jobData, setJobData] = useState<Job>({
-        jobTitle: "",
-        department: "",
-        location: "",
-        openings: 0,
-        experience: "",
-        employeeType: "",
-        workType: "",
-        qualificationRequired: "",
-        salary: "",
-        jobDescription: "",
-        skillsRequired: "",
-        companyName: "",
-    });
+    const [jobData, setJobData] = useState<Job>(
+        jobToEdit ?? {
+            jobTitle: "",
+            department: "",
+            location: "",
+            openings: 0,
+            experience: "",
+            employeeType: "",
+            workType: "",
+            qualificationRequired: "",
+            salary: "",
+            jobDescription: "",
+            skillsRequired: "",
+            companyName: "",
+        }
+    );
 
     return (
         <>
@@ -93,24 +133,26 @@ const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen }) => {
                 <SheetClose>
                     <Button className="w-[135px]">Save Draft</Button>
                 </SheetClose>
-                <Button className="w-[135px]" onClick={handleSaveAndContinue}>
-                    {isPublishMode ? "Publish" : "Continue"}
+                <Button className="w-[135px]" onClick={handleSaveAndContinue} disabled={createJobMutation.isPending}>
+                    {createJobMutation.isPending ? "Publishing..." : isPublishMode ? "Publish" : "Continue"}
                 </Button>
             </SheetFooter>
         </>
     );
 };
 
-const JobSheet: React.FC = () => {
+const JobSheet: React.FC<JobSheetProps> = ({ jobToEdit }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const role = useUserRole();
+    if (role == "candidate") return null;
 
     return (
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger>
-                <Button className="p-4">+ Post a Job</Button>
+                <Button className="p-4">{jobToEdit ? "Edit Job" : "+ Post a Job"}</Button>
             </SheetTrigger>
             <SheetContent className="min-w-[710px] flex flex-col">
-                <JobSheetContent setIsOpen={setIsOpen} />
+                <JobSheetContent setIsOpen={setIsOpen} jobToEdit={jobToEdit} />
             </SheetContent>
         </Sheet>
     );

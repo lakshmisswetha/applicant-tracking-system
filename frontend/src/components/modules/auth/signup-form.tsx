@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { signupUser } from "./auth.api";
-import { signupSchema } from "@/schemas/zod-schema";
+import { signupSchema } from "@/schemas/auth.schema";
 
 export function SignUpForm({ className, ...props }: React.ComponentPropsWithoutRef<"div">) {
     const [isAdmin, setIsAdmin] = useState(false);

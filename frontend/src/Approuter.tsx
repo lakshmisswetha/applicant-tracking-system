@@ -3,7 +3,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Jobs from "./pages/Jobs";
-import JobDetails from "./pages/JobDetails";
+import JobDetails from "./components/modules/Job-Details/JobDetails";
 import { Navigate } from "react-router-dom";
 
 const appRouter = createBrowserRouter([
@@ -28,7 +28,7 @@ const appRouter = createBrowserRouter([
                 element: <Jobs />,
             },
             {
-                path: "/jobdetails",
+                path: "/jobdetails/:jobId",
                 element: <JobDetails />,
             },
         ],

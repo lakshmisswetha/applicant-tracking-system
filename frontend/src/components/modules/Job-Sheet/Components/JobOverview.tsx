@@ -13,7 +13,7 @@ interface JobOverviewProps {
 const JobOverview: React.FC<JobOverviewProps> = ({ jobData, setJobData }) => {
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { name, value } = e.target;
-        setJobData((prev) => ({ ...prev, [name]: value }));
+        setJobData((prev) => ({ ...prev, [name]: name === "openings" ? Number(value) : value }));
     };
 
     return (

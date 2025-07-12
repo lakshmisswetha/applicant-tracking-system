@@ -3,7 +3,7 @@ import AppRouter from "./Approuter";
 
 function App() {
     return (
-        <ThemeProvider>
+        <ThemeProvider defaultTheme="light">
             <AppRouter />
         </ThemeProvider>
     );

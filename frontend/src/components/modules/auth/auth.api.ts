@@ -1,4 +1,4 @@
-import { LoginSchema, SignupSchema } from "@/schemas/zod-schema";
+import { LoginSchema, SignupSchema } from "@/schemas/auth.schema";
 import { API_BASE_URL } from "@/lib/utils";
 
 export const signupUser = async (payload: SignupSchema) => {
@@ -29,5 +29,6 @@ export const loginUser = async (payload: LoginSchema) => {
     }
 
     localStorage.setItem("token", data.accessToken);
+    localStorage.setItem("role", data.role);
     return data;
 };

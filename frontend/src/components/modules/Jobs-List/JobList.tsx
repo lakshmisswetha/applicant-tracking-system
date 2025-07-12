@@ -1,8 +1,11 @@
 import { Button } from "@/components/ui/button";
 import { useJobs } from "@/hooks/useJobs";
+import { useUserRole } from "@/hooks/useUserRole";
 import { formatDistanceToNow } from "date-fns";
+import { Link } from "react-router-dom";
 
 export const JobList = () => {
+    const role = useUserRole();
     const { data, isLoading, isError } = useJobs();
 
     if (isLoading) {
@@ -14,11 +17,11 @@ export const JobList = () => {
     }
 
     return (
-        <div className="flex flex-wrap ">
+        <div className="flex flex-col lg:flex-wrap lg:flex-row ">
             {data?.data?.map((job: any) => (
                 <div
                     key={job.jobId}
-                    className="rounded-lg p-6 bg-muted flex flex-col justify-between m-4 cursor-pointer w-[30%] h-[230px] "
+                    className="rounded-lg p-6 bg-muted flex flex-col justify-between m-4 cursor-pointer w-[300px] h-[230px] "
                 >
                     <div className="flex flex-col">
                         <div className="text-xl font-medium">{job.jobTitle}</div>
@@ -34,8 +37,13 @@ export const JobList = () => {
                         <div>{formatDistanceToNow(new Date(job.createdAt), { addSuffix: true })}</div>
                     </div>
                     <div className="flex justify-between">
-                        <Button variant="link">View Details</Button>
-                        <Button className="hover:bg-black hover:text-white">Apply Now</Button>
+                        <Link to={`/jobdetails/${job.jobId}`}>
+                            <Button variant="link">View Details</Button>
+                        </Link>
+
+                        <Button className="hover:bg-black hover:text-white">
+                            {role == "candidate" ? "Apply now" : "Edit Job"}
+                        </Button>
                     </div>
                 </div>
             ))}

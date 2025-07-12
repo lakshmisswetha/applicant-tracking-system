@@ -1,17 +1,30 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import { useParams } from "react-router-dom";
 import JobSheet from "@/components/modules/Job-Sheet";
+import { useQuery } from "@tanstack/react-query";
+import { fetchJobById } from "./jobDetails.api";
 
 const JobDetails = () => {
+    const { jobId } = useParams();
+    const { data, isLoading, isError } = useQuery({
+        queryKey: ["job", Number(jobId)],
+        queryFn: () => fetchJobById(jobId!),
+        enabled: !!jobId,
+    });
+
+    if (isLoading) return <div>Loading...</div>;
+    if (isError || !data?.status) return <div>Failed to load job stats</div>;
+
+    const job = data.data;
+
     return (
         <div>
             <div className="header flex justify-between items-center px-[250px] py-2 bg-muted fixed w-full z-10 shadow-sm">
-                <div className="font-bold text-xl">Content Writer</div>
+                <div className="font-bold text-xl">{job.jobTitle}</div>
 
-                <Input className="w-[450px] bg-muted-foreground/10" />
-                <JobSheet />
+                <JobSheet jobToEdit={job} />
             </div>
             <Tabs defaultValue="application-review" className=" flex flex-col mt-4 flex-1  px-[250px]">
                 <TabsList className="flex justify-around p-6 mt-20">
