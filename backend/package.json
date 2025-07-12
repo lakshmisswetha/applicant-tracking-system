@@ -5,7 +5,7 @@
     "main": "server`.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "dev": "ts-node-dev --respawn --transpile-only --env-file=.env api/server.ts",
+        "dev": "ts-node-dev --respawn --transpile-only api/server.ts",
         "build": "rimraf dist && tsc",
         "start": "node --env-file=.env dist/api/server.js",
         "generate": "npx drizzle-kit generate",
