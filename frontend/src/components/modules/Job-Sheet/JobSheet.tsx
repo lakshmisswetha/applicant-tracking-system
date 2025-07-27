@@ -21,7 +21,7 @@ import { Job } from "@/types/job";
 import { createJob } from "./createJob.api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useUserRole } from "@/hooks/useUserRole";
-import { jobSchema } from "@/schemas/job.schema";
+import { jobDraft, jobSchema } from "@/schemas/job.schema";
 import { editJob } from "../Job-Details/jobDetails.api";
 
 interface JobSheetContentProps {
@@ -76,11 +76,31 @@ const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen, jobToEdit 
                 alert(errorMessages);
                 return;
             }
+            const jobWithStatus = { ...jobData, status: "open" };
             if (jobToEdit) {
-                updateJobMutation.mutate(jobData);
+                updateJobMutation.mutate(jobWithStatus);
             } else {
-                createJobMutation.mutate(jobData);
+                createJobMutation.mutate(jobWithStatus);
             }
+        }
+    };
+
+    const handleSaveDraft = async () => {
+        const parsed = jobDraft.safeParse(jobData);
+        if (!parsed.success) {
+            const errorMessages = parsed.error.issues.map((e) => e.message).join("\n");
+            alert(errorMessages);
+            return;
+        }
+        const jobWithStatus = { ...jobData, status: "draft" };
+        const confirm = window.confirm(
+            "Saving it as a draft will hide it from applicants. Are you sure you want to proceed?"
+        );
+        if (!confirm) return;
+        if (jobToEdit) {
+            updateJobMutation.mutate(jobWithStatus);
+        } else {
+            createJobMutation.mutate(jobWithStatus);
         }
     };
 
@@ -131,7 +151,9 @@ const JobSheetContent: React.FC<JobSheetContentProps> = ({ setIsOpen, jobToEdit 
 
             <SheetFooter className="mt-2">
                 <SheetClose>
-                    <Button className="w-[135px]">Save Draft</Button>
+                    <Button className="w-[135px]" onClick={handleSaveDraft}>
+                        Save Draft
+                    </Button>
                 </SheetClose>
                 <Button className="w-[135px]" onClick={handleSaveAndContinue} disabled={createJobMutation.isPending}>
                     {createJobMutation.isPending ? "Publishing..." : isPublishMode ? "Publish" : "Continue"}

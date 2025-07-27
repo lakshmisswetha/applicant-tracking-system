@@ -3,8 +3,10 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Jobs from "./pages/Jobs";
-import JobDetails from "./components/modules/Job-Details/JobDetails";
+import JobDetailsAdmin from "./components/modules/Job-Details/JobDetailsAdmin";
 import { Navigate } from "react-router-dom";
+import ProtectedRoutes from "./components/ProtectedRoutes";
+import JobDetailsWrapper from "./components/modules/Job-Details/JobDetailsWrapper";
 
 const appRouter = createBrowserRouter([
     {
@@ -24,12 +26,17 @@ const appRouter = createBrowserRouter([
         element: <Layout />,
         children: [
             {
-                path: "/jobs",
-                element: <Jobs />,
-            },
-            {
-                path: "/jobdetails/:jobId",
-                element: <JobDetails />,
+                element: <ProtectedRoutes />,
+                children: [
+                    {
+                        path: "/jobs",
+                        element: <Jobs />,
+                    },
+                    {
+                        path: "/jobdetails/:jobId",
+                        element: <JobDetailsWrapper />,
+                    },
+                ],
             },
         ],
     },
