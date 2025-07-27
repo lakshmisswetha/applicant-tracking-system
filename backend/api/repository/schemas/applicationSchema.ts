@@ -1,5 +1,6 @@
-import { pgTable, serial, timestamp, integer } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, integer, jsonb, date, serial } from "drizzle-orm/pg-core";
 import { users } from "./userSchema";
+
 import { jobs } from "./jobSchema";
 
 export const applications = pgTable("applications", {
@@ -10,5 +11,18 @@ export const applications = pgTable("applications", {
     jobId: integer("job_id")
         .notNull()
         .references(() => jobs.jobId),
-    appliedAt: timestamp("applied_at").defaultNow(),
+    fullname: text("fullname").notNull(),
+    phone: text("phone").notNull(),
+    dob: date("dob"),
+    education: jsonb("education"),
+    experience: jsonb("experience"),
+    skills: text("skills"),
+    languages: text("languages"),
+    location: text("location"),
+    nationality: text("nationality"),
+    stage: text("stage").notNull().default("application-review"),
+    status: text("status").notNull().default("pending"),
+    updatedAt: timestamp("updated_at")
+        .defaultNow()
+        .$onUpdate(() => new Date()),
 });
