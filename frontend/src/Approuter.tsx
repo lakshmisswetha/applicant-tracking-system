@@ -3,7 +3,6 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Layout from "./pages/Layout";
 import Jobs from "./pages/Jobs";
-import JobDetailsAdmin from "./components/modules/Job-Details/JobDetailsAdmin";
 import { Navigate } from "react-router-dom";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import JobDetailsWrapper from "./components/modules/Job-Details/JobDetailsWrapper";
